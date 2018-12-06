@@ -26,7 +26,7 @@ Vue application created with [Vue](https://vuejs.org/) and [Vuex](https://vuex.v
 ├static/            => Folder for files static path imports
 ```
 
-## Vuex
+## Vuex structure
 
 ```
 store/
@@ -69,17 +69,90 @@ export default store
 To handle asynchronous actions we usually using [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/prototype)
 ```js
 export const actions = {
-    AsyncAction: ({ dispatch, commit }) => {
-        Api.fetch(query, params)
-          .then(response => {
-          	commit('MUTATION_TYPE', response)
-          })
-          .catch(error => {
-          	dispatch('FailResponse', error)
-          })
-    }
+  AsyncAction: ({ dispatch, commit }) => {
+    Api.fetch(query, params)
+      .then(response => {
+        commit('MUTATION_TYPE', response)
+      })
+      .catch(error => {
+        dispatch('FailResponse', error)
+      })
+  }
 }
 
+```
+
+### About directives
+All custom `directives` are in different folders and are imported only if they are used in the `component`.
+```js
+import directive from './directive'
+
+const install = (Vue) => {
+  Vue.directive('directive', directive)
+}
+
+if (window.Vue) {
+  window['directive'] = directive
+  Vue.use(install)
+}
+
+directive.install = install
+export default directive
+```
+
+### About icons
+Component `icons` is registered like global for using in different components.
+After this all svg icons be a vue components.
+```vue
+// SvgIcon.vue
+<template lang="pug">
+  svg(:class="svgClass" aria-hidden="true")
+    use(:xlink:href="iconName")
+</template>
+
+<script>
+export default {
+  name: 'SvgIcon',
+  props: {
+    iconClass: {
+      type: String,
+      required: true
+    },
+    className: {
+      type: String,
+      default: ''
+    }
+  },
+  computed: {
+    iconName() {
+      return `#icon-${this.iconClass}`
+    },
+    svgClass() {
+      if (this.className) {
+        return 'svg-icon ' + this.className
+      } else {
+        return 'svg-icon'
+      }
+    }
+  }
+}
+</script>
+```
+
+```js
+import Vue from 'vue'
+import SvgIcon from '@/components/SvgIcon'
+
+// register globally
+Vue.component('svg-icon', SvgIcon)
+
+const req = require.context('./svg', false, /\.svg$/)
+const requireAll = requireContext => requireContext.keys().map(requireContext)
+requireAll(req)
+
+// main.js
+
+import './icons'
 ```
 
 ## License
