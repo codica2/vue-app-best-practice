@@ -2,7 +2,7 @@
 
 ## Description
 
-Vue application created with [Vue-cli 3](https://cli.vuejs.org/) and [Vuex](https://vuex.vuejs.org/) for state managing.
+Vue application created with [Vue](https://vuejs.org/) and [Vuex](https://vuex.vuejs.org/) for state managing.
 
 ## File structure
 
@@ -42,28 +42,51 @@ store/
 └─index.js
 ```
 
+Modules are installed in the `index.js` file, which is in the root of the folder `store`.
+The `getters.js` file is global to get application states.
+```js
+/* ... */
+import app from './modules/app'
+import module1 from './modules/module 1'
+import getters from './getters'
+/* ... */
+
+Vue.use(Vuex)
+
+const store = new Vuex.Store({
+  modules: {
+    app,
+    module1
+  },
+  getters
+})
+
+export default store
+
+```
+
+### About actions
+To handle asynchronous actions we usually using [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/prototype)
+```js
+export const actions = {
+    AsyncAction: ({ dispatch, commit }) => {
+        Api.fetch(query, params)
+          .then(response => {
+          	commit('MUTATION_TYPE', response)
+          })
+          .catch(error => {
+          	dispatch('FailResponse', error)
+          })
+    }
+}
+
+```
+
 ## License
-
-The MIT License (MIT)
-
-[![Codica logo](https://www.codica.com/assets/images/logo/logo.svg)](https://www.codica.com/)
-
-Copyright (c) 2018 Codica
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+ vue-base-template is Copyright © 2015-2018 Codica. It is released under the [MIT License](https://opensource.org/licenses/MIT).
+ 
+## About Codica
+ 
+ [![Codica logo](https://www.codica.com/assets/images/logo/logo.svg)](https://www.codica.com)
+ 
+ We love open source software! See [our other projects](https://github.com/codica2) or [hire us](https://www.codica.com/) to design, develop, and grow your product.
