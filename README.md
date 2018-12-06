@@ -155,6 +155,45 @@ requireAll(req)
 import './icons'
 ```
 
+### About request
+For all request we are using `axios`. Create an `axios instance` for using base request template.
+```js
+import axios from 'axios'
+
+const service = axios.create({
+  baseURL: process.env.BASE_API,
+  headers: {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, PATCH, PUT, DELETE, OPTIONS',
+    'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token'
+  },
+  timeout: 5000
+})
+service.interceptors.request.use(
+  config => {
+    return config
+  },
+  error => {
+    console.log(error)
+    Promise.reject(error)
+  }
+)
+service.interceptors.response.use(
+  response => response,
+  error => {
+    console.log('err' + error)
+    Message({
+      message: error.message,
+      type: 'error',
+      duration: 5000
+    })
+    return Promise.reject(error)
+  }
+)
+
+export default service
+
+```
 ## License
  vue-base-template is Copyright © 2015-2018 Codica. It is released under the [MIT License](https://opensource.org/licenses/MIT).
  
