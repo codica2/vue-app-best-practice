@@ -1,4 +1,25 @@
 <h1 align="center">Vue base template</h1>
+<p align="center">
+<a href="http://www.opensource.org/licenses/mit-license.php" target="_blank">
+	<img src="https://img.shields.io/badge/License-MIT-blue.svg">
+</a>
+<a href="https://vuejs.org/" target="_blank">
+	<img src="https://img.shields.io/badge/Bandler-Webpack-%238DD6F9.svg">
+</a>
+<a href="https://vuejs.org/" target="_blank">
+	<img src="https://img.shields.io/badge/View-Vue-brightgreen.svg">
+</a>
+<a href="https://vuejs.org/" target="_blank">
+	<img src="https://img.shields.io/badge/State-Vuex-green.svg">
+</a>
+<a href="https://vuejs.org/" target="_blank">
+	<img src="https://img.shields.io/badge/Routing-Vue_router-yellowgreen.svg">
+</a>
+<a href="https://vuejs.org/" target="_blank">
+	<img src="https://img.shields.io/badge/Tool-Single_file_components-434cbc.svg">
+</a>
+
+</p>
 
 ## Description
 
@@ -28,6 +49,9 @@ Vue application created with [Vue](https://vuejs.org/) and [Vuex](https://vuex.v
 
 ## Vuex structure
 
+Vuex store is divided into modules. Each module has a main file `index.js` in which Vuex patterns are collected in such as `actions`, `mutations` and `getters`.
+
+
 ```
 store/
 ├─modules/
@@ -44,6 +68,7 @@ store/
 
 Modules are installed in the `index.js` file, which is in the root of the folder `store`.
 The `getters.js` file is global to get application states.
+File with name `mutations-types.js` has names of mutations constants.
 ```js
 /* ... */
 import app from './modules/app'
@@ -68,15 +93,20 @@ export default store
 ### About actions
 To handle asynchronous actions we usually using [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/prototype)
 ```js
+import Api from '@/api/index'
+
 export const actions = {
-  AsyncAction: ({ dispatch, commit }) => {
-    Api.fetch(query, params)
+  AsyncAction: ({ dispatch, commit }, payload) => {
+    Api.fetch(payload.method, payload.path, payload.data)
       .then(response => {
         commit('MUTATION_TYPE', response)
       })
       .catch(error => {
         dispatch('FailResponse', error)
       })
+  },
+  Action: ({ commit }, payload) => {
+  	commit('MUTATION_TYPE', payload)
   }
 }
 
