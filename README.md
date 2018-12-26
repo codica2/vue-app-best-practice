@@ -25,6 +25,41 @@
 
 Vue application created with [Vue](https://vuejs.org/) and [Vuex](https://vuex.vuejs.org/) for state managing.
 
+## Setup project
+#####Clone project
+
+```
+git clone [link]
+```
+####Install dependencies
+```
+yarn
+```
+####Start server
+
+```
+yarn serve
+```
+####For build in production
+```
+yarn build
+```
+####If you want customize run `vue ui` and select current project.
+For these command you need `vue-cli 3`, if you do not have, run next or you can read in [official documentation](https://cli.vuejs.org/guide/installation.html). 
+
+Remove vue-cli 2
+```
+yarn global remove vue-cli
+```
+Install `vue-cli 3` global
+```
+yarn global add @vue/cli
+```
+Check version
+```
+vue --version
+```
+
 ## File structure
 
 ```
@@ -136,11 +171,20 @@ After this all svg icons be a vue components.
 ```vue
 // SvgIcon.vue
 <template lang="pug">
-  svg(:class="svgClass" aria-hidden="true")
-    use(:xlink:href="iconName")
+  component(:is="iconClass")
 </template>
 
 <script>
+import Vue from 'vue'
+const req = require.context('@/icons/svg/', false, /\.svg$/);
+
+function importAll () {
+  req.keys().map(key => {
+    const name = key.match(/\w+/)[0];
+    return Vue.component(name, () => import(`@/icons/svg/${name}.svg`))
+  })
+}
+
 export default {
   name: 'SvgIcon',
   props: {
@@ -152,6 +196,9 @@ export default {
       type: String,
       default: ''
     }
+  },
+  components: {
+    ...importAll()
   },
   computed: {
     iconName() {

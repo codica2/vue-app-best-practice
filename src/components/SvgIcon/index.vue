@@ -1,9 +1,18 @@
 <template lang="pug">
-  svg(:class="svgClass" aria-hidden="true")
-    use(:xlink:href="iconName")
+  component(:is="iconClass")
 </template>
 
 <script>
+import Vue from 'vue'
+const req = require.context('@/icons/svg/', false, /\.svg$/);
+
+function importAll () {
+  req.keys().map(key => {
+    const name = key.match(/\w+/)[0];
+    return Vue.component(name, () => import(`@/icons/svg/${name}.svg`))
+  })
+}
+
 export default {
   name: 'SvgIcon',
   props: {
@@ -15,6 +24,9 @@ export default {
       type: String,
       default: ''
     }
+  },
+  components: {
+    ...importAll()
   },
   computed: {
     iconName() {
