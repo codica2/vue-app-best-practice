@@ -1,20 +1,23 @@
 <template lang="pug">
-  component(:is="iconClass")
+  component(:is="iconClass" :class="svgClass")
 </template>
 
 <script>
 import Vue from 'vue'
-const req = require.context('@/icons/svg/', false, /\.svg$/);
+const req = require.context('@/icons/svg/', false, /\.svg$/)
 
-function importAll () {
+function importAll() {
   req.keys().map(key => {
-    const name = key.match(/\w+/)[0];
+    const name = key.match(/\w+/)[0]
     return Vue.component(name, () => import(`@/icons/svg/${name}.svg`))
   })
 }
 
 export default {
   name: 'SvgIcon',
+  components: {
+    ...importAll()
+  },
   props: {
     iconClass: {
       type: String,
@@ -24,9 +27,6 @@ export default {
       type: String,
       default: ''
     }
-  },
-  components: {
-    ...importAll()
   },
   computed: {
     iconName() {
