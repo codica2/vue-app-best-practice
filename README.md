@@ -63,8 +63,7 @@ vue --version
 ## File structure
 
 ```
-├build/             => Global rules for building project
-├config/            => Global constants for building project
+├public/            => Any static assets placed here.
 ├src/
 | ├─api/            => Api functions
 | ├─assets/         => Folder for files relative path imports
