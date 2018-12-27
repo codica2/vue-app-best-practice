@@ -23,9 +23,9 @@
 
 ## Description
 
-Vue application created with [Vue-cli](https://cli.vuejs.org/), [Vue](https://vuejs.org/), [Vuex](https://vuex.vuejs.org/) for state managing, [Vue-router](https://router.vuejs.org/) for routing.
+Vue application created with [Vue-cli](https://cli.vuejs.org/), [Vuex](https://vuex.vuejs.org/) for state management and [Vue-router](https://router.vuejs.org/) for routing.
 
-## Setup project
+## Project installation
 ##### Clone project
 
 ```
@@ -40,18 +40,18 @@ yarn
 ```
 yarn serve
 ```
-#### For build in production
+#### For production build
 ```
 yarn build
 ```
-#### If you want customize run `vue ui` and select current project.
-For these command you need `vue-cli 3`, if you do not have, run next or you can read in [official documentation](https://cli.vuejs.org/guide/installation.html). 
+#### If you want to customize the project - run `vue ui` and select the current project.
+For this command, you need `vue-cli 3`. In case you don’t have this package installed, run the following command or find out the step-by-step tutorial using [official documentation](https://cli.vuejs.org/guide/installation.html). 
 
 Remove vue-cli 2
 ```
 yarn global remove vue-cli
 ```
-Install `vue-cli 3` global
+Install `vue-cli 3` with a global flag
 ```
 yarn global add @vue/cli
 ```
@@ -63,13 +63,13 @@ vue --version
 ## File structure
 
 ```
-├public/            => Any static assets placed here.
+├public/            => Any static assets are placed here.
 ├src/
-| ├─api/            => Api functions
-| ├─assets/         => Folder for files relative path imports
+| ├─api/            => API functions
+| ├─assets/         => Folder for relative path files’ import
 | ├─components/     => Global components
 | ├─directives/     => Custom directives
-| ├─icons/          => Svg icons
+| ├─icons/          => SVG icons
 | ├─mixins/         => Global mixins
 | ├─router/         => Vue-router
 | ├─store/          => Vuex
@@ -78,12 +78,12 @@ vue --version
 | ├─views/          => Layouts for view
 | ├─App.vue         => Main component
 | └─main.js         => Main JS file
-└static/            => Folder for files static path imports
+└static/            => Folder for static path files import
 ```
 
 ## Vuex structure
 
-Vuex store is divided into modules. Each module has a main file `index.js` in which Vuex patterns are collected in such as `actions`, `mutations` and `getters`.
+Vuex store is divided into modules. Each module has a main file `index.js` where Vuex patterns are gathered in `actions`, `mutations` and `getters`.
 
 
 ```
@@ -100,7 +100,7 @@ store/
 └─index.js
 ```
 
-Modules are installed in the `index.js` file, which is in the root of the folder `store`.
+Modules are installed in the `index.js` file, which is in the `Store` root folder.
 The `getters.js` file is global to get application states.
 File with name `mutations-types.js` has names of mutations constants.
 ```js
@@ -124,14 +124,14 @@ export default store
 
 ```
 
-### About actions
-To handle asynchronous actions we usually using [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/prototype)
+### About Actions
+To handle asynchronous actions we usually use [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/prototype)
 ```js
-import Api from '@/api/index'
+import API from '@/api/index'
 
 export const actions = {
   AsyncAction: ({ dispatch, commit }, payload) => {
-    Api.fetch(payload.method, payload.path, payload.data)
+    API.fetch(payload.method, payload.path, payload.data)
       .then(response => {
         commit('MUTATION_TYPE', response)
       })
@@ -147,7 +147,7 @@ export const actions = {
 ```
 
 ### About directives
-Directive is some special token in the markup that tells the library to do something to a DOM element
+A directive is a special token in the markup that tells the library to take some `actions` to a DOM element.
 All custom `directives` are in different folders and are imported only if they are used in the `component`.
 ```js
 import directive from './directive'
@@ -166,8 +166,9 @@ export default directive
 ```
 
 ### Component SvgIcon
-Component `icons` is registered like global for using in different components.
-After this all svg icons be a vue components.
+Component `icons` are resolved as global for using in different components.
+Afterwards, all the SVG icons become Vue components.
+
 ```vue
 // SvgIcon.vue
 <template lang="pug">
@@ -218,7 +219,7 @@ import './icons'
 ```
 
 ### About request
-For all request we are using `axios`. Create an `axios instance` for using base request template.
+For all the requests we are using `axios`. Create an `axios instance` for using base request template.
 ```js
 import axios from 'axios'
 
