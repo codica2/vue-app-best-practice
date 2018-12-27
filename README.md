@@ -23,7 +23,7 @@
 
 ## Description
 
-Vue application created with [Vue](https://vuejs.org/) and [Vuex](https://vuex.vuejs.org/) for state managing.
+Vue application created with [Vue-cli](https://cli.vuejs.org/), [Vue](https://vuejs.org/), [Vuex](https://vuex.vuejs.org/) for state managing, [Vue-router](https://router.vuejs.org/) for routing.
 
 ## Setup project
 ##### Clone project
@@ -66,7 +66,7 @@ vue --version
 ├build/             => Global rules for building project
 ├config/            => Global constants for building project
 ├src/
-| ├─api/            => Api function
+| ├─api/            => Api functions
 | ├─assets/         => Folder for files relative path imports
 | ├─components/     => Global components
 | ├─directives/     => Custom directives
@@ -79,7 +79,7 @@ vue --version
 | ├─views/          => Layouts for view
 | ├─App.vue         => Main component
 | └─main.js         => Main JS file
-├static/            => Folder for files static path imports
+└static/            => Folder for files static path imports
 ```
 
 ## Vuex structure
@@ -90,12 +90,12 @@ Vuex store is divided into modules. Each module has a main file `index.js` in wh
 ```
 store/
 ├─modules/
-|  ├─module 1/
-|  |  ├─actions.js
-|  |  ├─mutations.js
-|  |  ├─getters.js
-|  |  └─index.js
-|  └─app.js
+|  └─bar/
+|     ├─actions.js
+|     ├─mutations.js
+|     ├─getters.js
+|     └─index.js
+├──app.js
 ├─getters.js
 ├─mutations-types.js
 └─index.js
@@ -107,7 +107,7 @@ File with name `mutations-types.js` has names of mutations constants.
 ```js
 /* ... */
 import app from './modules/app'
-import module1 from './modules/module 1'
+import bar from './modules/bar'
 import getters from './getters'
 /* ... */
 
@@ -116,7 +116,7 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   modules: {
     app,
-    module1
+    bar
   },
   getters
 })
@@ -148,6 +148,7 @@ export const actions = {
 ```
 
 ### About directives
+Directive is some special token in the markup that tells the library to do something to a DOM element
 All custom `directives` are in different folders and are imported only if they are used in the `component`.
 ```js
 import directive from './directive'
@@ -165,25 +166,17 @@ directive.install = install
 export default directive
 ```
 
-### About icons
+### Component SvgIcon
 Component `icons` is registered like global for using in different components.
 After this all svg icons be a vue components.
 ```vue
 // SvgIcon.vue
 <template lang="pug">
-  component(:is="iconClass")
+  component(:is="iconClass" :class="svgClass")
 </template>
 
 <script>
 import Vue from 'vue'
-const req = require.context('@/icons/svg/', false, /\.svg$/);
-
-function importAll () {
-  req.keys().map(key => {
-    const name = key.match(/\w+/)[0];
-    return Vue.component(name, () => import(`@/icons/svg/${name}.svg`))
-  })
-}
 
 export default {
   name: 'SvgIcon',
@@ -197,13 +190,7 @@ export default {
       default: ''
     }
   },
-  components: {
-    ...importAll()
-  },
   computed: {
-    iconName() {
-      return `#icon-${this.iconClass}`
-    },
     svgClass() {
       if (this.className) {
         return 'svg-icon ' + this.className
@@ -211,6 +198,9 @@ export default {
         return 'svg-icon'
       }
     }
+  },
+  created() {
+    Vue.component(this.iconClass, () => import(`@/icons/svg/${this.iconClass}.svg`))
   }
 }
 </script>
@@ -223,10 +213,6 @@ import SvgIcon from '@/components/SvgIcon'
 // register globally
 Vue.component('svg-icon', SvgIcon)
 
-const req = require.context('./svg', false, /\.svg$/)
-const requireAll = requireContext => requireContext.keys().map(requireContext)
-requireAll(req)
-
 // main.js
 
 import './icons'
@@ -238,7 +224,7 @@ For all request we are using `axios`. Create an `axios instance` for using base 
 import axios from 'axios'
 
 const service = axios.create({
-  baseURL: process.env.BASE_API,
+  baseURL: process.env.VUE_APP_BASE_API,
   headers: {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET, POST, PATCH, PUT, DELETE, OPTIONS',
@@ -259,11 +245,11 @@ service.interceptors.response.use(
   response => response,
   error => {
     console.log('err' + error)
-    Message({
-      message: error.message,
-      type: 'error',
-      duration: 5000
-    })
+    // Message({
+    //  message: error.message,
+    //  type: 'error',
+    //  duration: 5000
+    // })
     return Promise.reject(error)
   }
 )

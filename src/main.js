@@ -2,8 +2,8 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store'
-import '@/icons'
-
+import '@/assets/icons'
+import '@/assets/styles/index.scss'
 Vue.config.productionTip = false
 
 new Vue({

@@ -32,7 +32,7 @@ export default {
         store.dispatch('toggleDevice', isMobile ? 'mobile' : 'desktop')
 
         if (isMobile) {
-          store.dispatch('closeSideBar', { withoutAnimation: true })
+          // Some actions
         }
       }
     }

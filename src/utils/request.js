@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const service = axios.create({
-  baseURL: process.env.BASE_API,
+  baseURL: process.env.VUE_APP_BASE_API,
   headers: {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET, POST, PATCH, PUT, DELETE, OPTIONS',
@@ -22,11 +22,11 @@ service.interceptors.response.use(
   response => response,
   error => {
     console.log('err' + error)
-    Message({
-      message: error.message,
-      type: 'error',
-      duration: 5000
-    })
+    // Message({
+    //   message: error.message,
+    //   type: 'error',
+    //   duration: 5000
+    // })
     return Promise.reject(error)
   }
 )

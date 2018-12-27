@@ -4,20 +4,9 @@
 
 <script>
 import Vue from 'vue'
-const req = require.context('@/icons/svg/', false, /\.svg$/)
-
-function importAll() {
-  req.keys().map(key => {
-    const name = key.match(/\w+/)[0]
-    return Vue.component(name, () => import(`@/icons/svg/${name}.svg`))
-  })
-}
 
 export default {
   name: 'SvgIcon',
-  components: {
-    ...importAll()
-  },
   props: {
     iconClass: {
       type: String,
@@ -29,9 +18,6 @@ export default {
     }
   },
   computed: {
-    iconName() {
-      return `#icon-${this.iconClass}`
-    },
     svgClass() {
       if (this.className) {
         return 'svg-icon ' + this.className
@@ -39,6 +25,9 @@ export default {
         return 'svg-icon'
       }
     }
+  },
+  created() {
+    Vue.component(this.iconClass, () => import(`@/icons/svg/${this.iconClass}.svg`))
   }
 }
 </script>
